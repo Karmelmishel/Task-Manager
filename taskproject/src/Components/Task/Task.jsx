@@ -56,19 +56,3 @@ function Task() {
 
 export default Task;
 
-
-// try (!name) {
-//   setErrorMessage("Name is required");
-//   return;
-// }
-
-// else{
-  // const response = await axios.post(request.create, { name });
-  // const { taskId } = response.data;
-  // console.log(`Task created with ID: ${taskId}`);
-  // setName("");
-  // setErrorMessage("");
-//   if (response.ok) {
-//     window.location.href = "/";
-//   }
-// } 

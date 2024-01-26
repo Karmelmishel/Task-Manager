@@ -33,7 +33,7 @@ const TaskRed = () => {
      <div className="tasks">
        {tasks?.map((task) => (
          <div className="single-task" key={task.id}>
-           <h5>
+           <h5 className="">
              <span>
                <i className="far fa-check-circle"></i>
              </span>

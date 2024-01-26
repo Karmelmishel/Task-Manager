@@ -31,17 +31,17 @@ const TaskEdit = () => {
       });
   
         if (response.ok) {
-          // Task updated successfully, you can redirect or show a success message
           console.log("Task updated successfully");
         } else {
-          // Handle error response
           console.log("Error updating task");
         }
       } catch (error) {
         console.log("Error: unable to update task", error);
       }
     };
-  
+    const handleCheckboxChange = (e) => {
+      setCompleted(e.target.checked);
+    };
     return (
       <form className="single-task-form">
         <h4>Edit Task</h4>
@@ -55,7 +55,6 @@ const TaskEdit = () => {
             type="text"
             name="name"
             value={name}
-            // placeholder={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
@@ -65,7 +64,7 @@ const TaskEdit = () => {
             type="checkbox"
             name="completed"
             checked={completed}
-            onChange={(e) => setCompleted(e.target.checked)}
+           onChange={handleCheckboxChange}
             className="task-edit-completed"
           />
         </div>
