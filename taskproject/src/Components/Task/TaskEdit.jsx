@@ -1,48 +1,62 @@
-import React, { useState } from "react";
-import axios from "../utils/axios";
+import React, { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import axios from '../utils/axios';
 
 const TaskEdit = () => {
-  const [taskId, setTaskId] = useState("");
-  const [taskName, setTaskName] = useState("");
-  const [completed, setCompleted] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!taskName) {
-      setErrorMessage("Name is required");
-      return;
-    }
-
-    try {
-      await axios.patch(`/task/${taskId}`, {
-        name: taskName,
-        completed: completed,
-      });
-    
-    } catch (error) {
-      console.error("Error editing task:", error);
+    const { id } = useParams();
+    const [name, setName] = useState("");
+    const [completed, setCompleted] = useState(false);
   
-    }
-  };
-
-  return (
-    <div className="container" id='task-edit'>
-      <form className="single-task-form" onSubmit={handleFormSubmit}>
+    useEffect(() => {
+        
+        const fetchTask = async () => {
+            try {
+              const response = await axios.get(`/task/${id}`);
+              const data = response.data;
+              setName(data[0].task_name);
+              setCompleted(data[0].completed);
+            } catch (error) {
+              console.error('Error fetching task:', error);
+            }
+          };
+  
+      fetchTask();
+    }, [id]);
+  
+    const edit = async (taskId, updatedName, updatedCompleted) => {
+      try {
+        const response =await axios.patch(`/task/${taskId}`, {
+        name: updatedName,
+        completed: updatedCompleted,
+      });
+  
+        if (response.ok) {
+          // Task updated successfully, you can redirect or show a success message
+          console.log("Task updated successfully");
+        } else {
+          // Handle error response
+          console.log("Error updating task");
+        }
+      } catch (error) {
+        console.log("Error: unable to update task", error);
+      }
+    };
+  
+    return (
+      <form className="single-task-form">
         <h4>Edit Task</h4>
         <div className="form-control">
           <label>Task ID</label>
-          <p className="task-edit-id">{taskId}</p>
+          <p className="task-edit-id">{id}</p>
         </div>
         <div className="form-control">
           <label htmlFor="name">Name</label>
           <input
             type="text"
             name="name"
-            className="task-edit-name"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
+            value={name}
+            // placeholder={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div className="form-control">
@@ -50,21 +64,24 @@ const TaskEdit = () => {
           <input
             type="checkbox"
             name="completed"
-            className="task-edit-completed"
             checked={completed}
             onChange={(e) => setCompleted(e.target.checked)}
+            className="task-edit-completed"
           />
         </div>
-        <button type="submit" className="block btn task-edit-btn">
+        <button
+          type="submit"
+          className="block btn task-edit-btn"
+          onClick={() => edit(id, name, completed)}
+        >
           Edit
         </button>
-        <div className="form-alert">{errorMessage}</div>
+        <div className="form-alert"></div>
+        <Link to="/" className="btn back-link">
+          Back to tasks
+        </Link>
       </form>
-      <a href="index.html" className="btn back-link">
-        Back to tasks
-      </a>
-    </div>
-  );
-};
+    );
+}
 
-export default TaskEdit;
+export default TaskEdit

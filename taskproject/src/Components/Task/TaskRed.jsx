@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "../utils/axios";
 import requests from '../utils/request'
+import { Link } from "react-router-dom";
 
 const TaskRed = () => {
     const [tasks, setTasks] = useState([]);
@@ -25,18 +26,7 @@ const TaskRed = () => {
           console.error('Error deleting task:', error);
         });
     };
-   
-    const editTask = (taskId) => {
-      axios.get(`/task/${taskId}`) 
-        .then(() => {
-          setTasks(tasks.filter((task) => task_name == taskId));
-        })
-        .catch((error) => {
-          console.error('Error deleting task:', error);
-        });
-    };
-   
-   
+
   return (
     <>
         <section className="tasks-container">
@@ -50,9 +40,9 @@ const TaskRed = () => {
              {task.task_name}
            </h5>
            <div className="task-links">
-             <a href="#task-edit" className="edit-link" onClick={() => editTask(task.task_name)}>
+             <Link to={`/task/${task.id}`} className="edit-link" >
                <i className="fas fa-edit" ></i>
-             </a>
+             </Link>
              <button type="button" className="delete-btn"  onClick={() => deleteTask(task.id)}>
                <i className="fas fa-trash"></i>
              </button>

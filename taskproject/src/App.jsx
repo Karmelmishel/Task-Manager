@@ -1,16 +1,18 @@
-import React from 'react'
-import Task from './Components/Task/Task'
-import TaskEdit from './Components/Task/TaskEdit'
-import TaskRed from './Components/Task/TaskRed'
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Sherlayout from "./Components/Task/Sherlayout";
+import TaskEdit from "./Components/Task/TaskEdit";
 
 const App = () => {
   return (
     <>
-      <Task/>
-      <TaskRed/>
-      <TaskEdit/>
+      <Routes>
+        <Route path="/" element={<Sherlayout />} />
+        <Route path="/task/:id" element={<TaskEdit />} />
+      </Routes>
+    
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

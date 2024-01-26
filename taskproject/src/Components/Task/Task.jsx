@@ -5,23 +5,28 @@ import request from '../utils/request'
 function Task() {
   const [name, setName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  
 
   const Submit = async (e) => {
     e.preventDefault();
+    try {
 
-    if (!name) {
-      setErrorMessage("Name is required");
-      return;
-    }
-
-   else{
       const response = await axios.post(request.create, { name });
       const { taskId } = response.data;
       console.log(`Task created with ID: ${taskId}`);
       setName("");
-      setErrorMessage("");
-    } 
+      if (!name){
+        setErrorMessage("Name is required");
+        console.error("Error inserting task");
+        return;
+			}
+			if (response) {
+				window.location.reload();
+			} 
+			console.log(data);
+		} catch (error) {
+			console.error("Error on adding task:", error.message);
+		}
+    
   };
 
   return (
@@ -37,7 +42,9 @@ function Task() {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <button type="submit" className="btn submit-btn">
+        <button type="submit" className="btn submit-btn" onClick={() => {
+						Submit();
+					}} >
           Add
         </button>
       </div>
@@ -48,3 +55,20 @@ function Task() {
 }
 
 export default Task;
+
+
+// try (!name) {
+//   setErrorMessage("Name is required");
+//   return;
+// }
+
+// else{
+  // const response = await axios.post(request.create, { name });
+  // const { taskId } = response.data;
+  // console.log(`Task created with ID: ${taskId}`);
+  // setName("");
+  // setErrorMessage("");
+//   if (response.ok) {
+//     window.location.href = "/";
+//   }
+// } 
